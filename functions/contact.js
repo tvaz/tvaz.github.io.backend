@@ -6,19 +6,27 @@ exports.handler = async (event) => {
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/contacts`, {
+  const response = await fetch(SUPABASE_URL + '/rest/v1/contacts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'apikey': SUPABASE_SERVICE_ROLE_KEY,
       'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`
     },
-    body: JSON.stringify({ name, email, message })
+    body: JSON.stringify(payload)
   });
 
-  return {
-    statusCode: response.ok ? 200 : 400,
-    body: JSON.stringify(await response.json())
-  };
+  if (!response.ok) {
+    const errorText = await response.text(); // fallback if JSON fails
+    throw new Error(`Supabase error: ${response.status} ${errorText}`);
+  }
+
+  let data;
+  try {
+    data = await response.json();
+  } catch (err) {
+    throw new Error('Supabase returned an empty or invalid JSON response');
+  }
+
 };
 
