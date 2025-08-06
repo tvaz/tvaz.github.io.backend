@@ -1,0 +1,10 @@
+{
+  "name": "tvaz.github.io.backend",
+  "version": "1.0.0",
+  "main": "functions/contact.js",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "type": "module"
+}
+
