@@ -2,14 +2,15 @@ const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
 
+  cors_headers = {
+    "Access-Control-Allow-Origin": "https://torivaz.com",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS"}
+
   if (event.httpMethod === "OPTIONS") {
     return {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "https://torivaz.com/",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "POST, OPTIONS"
-      },
+      headers: cors_headers,
       body: ""
     };
   }
@@ -59,10 +60,7 @@ exports.handler = async (event) => {
     // Return success response
     return {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "https://torivaz.com/",
-        "Access-Control-Allow-Headers": "Content-Type"
-      },
+      headers: cors_headers,
       body: JSON.stringify({
         success: true,
         data: data || "No valid JSON returned from Supabase"
@@ -74,10 +72,7 @@ exports.handler = async (event) => {
     console.error("Function error:", error);
     return {
       statusCode: 500,
-        headers: {
-        "Access-Control-Allow-Origin": "https://torivaz.com/",
-        "Access-Control-Allow-Headers": "Content-Type"
-      },
+      headers: cors_headers,
       body: JSON.stringify({
         success: false,
         error: error.message
